@@ -14,8 +14,12 @@ func Match(message map[string]interface{}, match map[string]interface{}) (bool, 
         case string:
             fmt.Println(k, "is string", vv)
 			fmt.Println(k, "is string", message[k])
-			doMatch := vv == message[k]
-			return doMatch, nil
+//need also to check datatype of message[k]
+			if _, ok := message[k]; ok {
+				doMatch := vv == message[k]
+				return doMatch, nil
+			}
+			return false, nil
         default:
             fmt.Println(k, "is of a type I don't know how to handle", vv)
         }

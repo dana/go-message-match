@@ -3,12 +3,35 @@ package messagematch
 import (
 	"fmt"
 	"testing"
+	"github.com/stretchr/testify/assert"
 )
 
 //func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
 
+func TestBasicMatchStringAndNumber(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"Name": "Wednesday",
+		"Age":  6,
+		"Parents": map[string]interface{}{
+			"bee": "boo",
+			"foo": map[string]interface{}{
+				"hi": []string{"a", "b"},
+			},
+		},
+	}
+	match := map[string]interface{}{
+		"Name": "Wednesday",
+		"Age": 6,
+	}
+
+	doesMatch, sendErr := Match(message, match)
+	assert.Nil(sendErr)
+	assert.True(doesMatch)
+}
+
 func TestBasicNoMessageExist(t *testing.T) {
-	fmt.Println("in TestBasic")
+	assert := assert.New(t)
 	message := map[string]interface{}{
 		"Name": "Wednesday",
 		"Age":  6,
@@ -24,17 +47,11 @@ func TestBasicNoMessageExist(t *testing.T) {
 	}
 
 	doesMatch, sendErr := Match(message, match)
-	if sendErr != nil {
-		t.Error(sendErr)
-		return
-	}
-	if doesMatch {
-		t.Error("match failed when it should have succeeded")
-		return
-	}
+	assert.Nil(sendErr)
+	assert.False(doesMatch)
 }
 func TestBasicNoMatch(t *testing.T) {
-	fmt.Println("in TestBasic")
+	assert := assert.New(t)
 	message := map[string]interface{}{
 		"Name": "Wednesday",
 		"Age":  6,
@@ -50,18 +67,12 @@ func TestBasicNoMatch(t *testing.T) {
 	}
 
 	doesMatch, sendErr := Match(message, match)
-	if sendErr != nil {
-		t.Error(sendErr)
-		return
-	}
-	if doesMatch {
-		t.Error("match failed when it should have succeeded")
-		return
-	}
+	assert.Nil(sendErr)
+	assert.False(doesMatch)
 }
 
 func TestBasicMatch(t *testing.T) {
-	fmt.Println("in TestBasic")
+	assert := assert.New(t)
 	message := map[string]interface{}{
 		"Name": "Wednesday",
 		"Age":  6,
@@ -77,13 +88,7 @@ func TestBasicMatch(t *testing.T) {
 	}
 
 	doesMatch, sendErr := Match(message, match)
-	if sendErr != nil {
-		t.Error(sendErr)
-		return
-	}
-	if !doesMatch {
-		t.Error("match succeeded when it should have failed")
-		return
-	}
+	assert.Nil(sendErr)
+	assert.True(doesMatch)
+	fmt.Println("noop")
 }
-

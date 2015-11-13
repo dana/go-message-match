@@ -1,7 +1,7 @@
 package messagematch
 
 import (
-	"fmt"
+	"github.com/kr/pretty"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -114,5 +114,5 @@ func TestBasicMatch(t *testing.T) {
 	doesMatch, matchErr := Match(message, match)
 	assert.Nil(matchErr)
 	assert.True(doesMatch)
-	fmt.Println("noop")
+	pretty.Print("noop")
 }

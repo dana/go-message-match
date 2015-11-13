@@ -3,11 +3,15 @@ package messagematch
 import (
 	"fmt"
 	"reflect"
+	"github.com/kr/pretty"
 )
 
 func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
-	fmt.Println(message)
-	fmt.Println(match)
+/*	pretty.Println("message: ", message)
+	pretty.Println("match: ", match)
+	pretty.Println(reflect.TypeOf(message))
+	pretty.Println(reflect.TypeOf(match))
+	*/
 	for k, v := range match {
 		fmt.Println(k, " -> ", reflect.TypeOf(v))
 		switch vv := v.(type) {
@@ -27,6 +31,7 @@ func Match(message map[string]interface{}, match map[string]interface{}) (bool, 
 	}
 	error := error(nil)
 	ret := true
+	pretty.Println("")
 	return ret, error
 }
 

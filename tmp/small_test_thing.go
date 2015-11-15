@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/kr/pretty"
 	"github.com/dana/go-message-match"
+	"github.com/kr/pretty"
 )
 
 //func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
@@ -26,4 +26,3 @@ func main() {
 	pretty.Print(matchErr)
 	pretty.Print(doesMatch)
 }
-

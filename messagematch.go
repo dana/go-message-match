@@ -2,37 +2,48 @@ package messagematch
 
 import (
 	"fmt"
-	"reflect"
 	"github.com/kr/pretty"
+	"reflect"
 )
 
 func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
-/*	pretty.Println("message: ", message)
-	pretty.Println("match: ", match)
-	pretty.Println(reflect.TypeOf(message))
-	pretty.Println(reflect.TypeOf(match))
-	*/
-	for k, v := range match {
-		fmt.Println(k, " -> ", reflect.TypeOf(v))
-		switch vv := v.(type) {
+	return matchMapMap(message, match)
+}
+
+func matchStringString(message string, match string) (bool, error) {
+	fmt.Println("In matchStringString")
+	doesMatch := message == match
+	return doesMatch, nil
+}
+
+func matchMapMap(message map[string]interface{}, match map[string]interface{}) (bool, error) {
+	for key, value := range match {
+		fmt.Println(key, " -> ", reflect.TypeOf(value))
+		switch valueType := value.(type) {
 		case string:
-			fmt.Println(k, "is string", vv)
-			fmt.Println(k, "is string", message[k])
+			//			pretty.Println(key, "is string", valueType)
+			//			pretty.Println(key, "is string", message[key])
 			//need also to check datatype of message[k]
-			if _, ok := message[k]; ok {
-				doMatch := vv == message[k]
+			if _, ok := message[key]; ok {
+				doMatch, _ := matchStringString(value.(string), message[key].(string)) //valueType == message[key]
 				return doMatch, nil
 			}
 			return false, nil
+		case int:
+			fmt.Println(key, "is int", valueType)
+			fmt.Println(key, "is int", message[key])
+		case float64:
+			fmt.Println(key, "is float64", valueType)
+			fmt.Println(key, "is float64", message[key])
+		case []interface{}:
+			fmt.Println(key, "is an array:")
+		case map[string]interface{}:
+			pretty.Println(value, "is a map:")
 		default:
-			fmt.Println(k, "is of a type I don't know how to handle", vv)
+			fmt.Println(key, "is of a type I don't know how to handle", valueType)
 		}
-		return true, nil
 	}
-	error := error(nil)
-	ret := true
-	pretty.Println("")
-	return ret, error
+	return false, nil
 }
 
 /*

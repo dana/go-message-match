@@ -21,11 +21,8 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 		fmt.Println(key, " -> ", reflect.TypeOf(value))
 		switch valueType := value.(type) {
 		case string:
-			//			pretty.Println(key, "is string", valueType)
-			//			pretty.Println(key, "is string", message[key])
-			//need also to check datatype of message[k]
 			if _, ok := message[key]; ok {
-				doMatch, _ := matchStringString(value.(string), message[key].(string)) //valueType == message[key]
+				doMatch, _ := matchStringString(value.(string), message[key].(string))
 				return doMatch, nil
 			}
 			return false, nil
@@ -39,6 +36,11 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			fmt.Println(key, "is an array:")
 		case map[string]interface{}:
 			pretty.Println(value, "is a map:")
+			if _, ok := message[key]; ok {
+				doMatch, _ := matchMapMap(value.(map[string]interface{}), message[key].(map[string]interface{}))
+				return doMatch, nil
+			}
+			return false, nil
 		default:
 			fmt.Println(key, "is of a type I don't know how to handle", valueType)
 		}

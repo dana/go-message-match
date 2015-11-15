@@ -16,6 +16,12 @@ func matchStringString(message string, match string) (bool, error) {
 	return doesMatch, nil
 }
 
+func matchIntInt(message int, match int) (bool, error) {
+	fmt.Println("In matchIntInt")
+	doesMatch := message == match
+	return doesMatch, nil
+}
+
 func matchMapMap(message map[string]interface{}, match map[string]interface{}) (bool, error) {
 	for key, value := range match {
 		fmt.Println(key, " -> ", reflect.TypeOf(value))
@@ -29,6 +35,11 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 		case int:
 			fmt.Println(key, "is int", valueType)
 			fmt.Println(key, "is int", message[key])
+			/*			if _, ok := message[key]; ok {
+							doMatch, _ := matchIntInt(value.(int), message[key].(int))
+							return doMatch, nil
+						}
+						return false, nil */
 		case float64:
 			fmt.Println(key, "is float64", valueType)
 			fmt.Println(key, "is float64", message[key])

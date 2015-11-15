@@ -7,6 +7,7 @@ import (
 )
 
 func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
+	pretty.Println(message, match)
 	return matchMapMap(message, match)
 }
 
@@ -16,6 +17,11 @@ func matchStringString(message string, match string) (bool, error) {
 	return doesMatch, nil
 }
 
+func matchFloat64Float64(message float64, match float64) (bool, error) {
+	fmt.Println("In matchFloat64Float64")
+	doesMatch := message == match
+	return doesMatch, nil
+}
 func matchIntInt(message int, match int) (bool, error) {
 	fmt.Println("In matchIntInt")
 	doesMatch := message == match
@@ -41,22 +47,39 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			}
 		case int:
 			//			fmt.Println(key, "is int", matchValueType)
-			fmt.Println(key, "is int", message[key])
-			/*			if _, ok := message[key]; ok {
-							doMatch, _ := matchIntInt(value.(int), message[key].(int))
-							return doMatch, nil
-						}
-						return false, nil */
+			//fmt.Println(key, "is int", message[key])
+			switch message[key].(type) {
+			case int:
+				if _, ok := message[key]; ok {
+					doMatch, _ := matchIntInt(value.(int), message[key].(int))
+					return doMatch, nil
+				}
+				return false, nil
+			default:
+				return false, nil
+			}
 		case float64:
-			//			fmt.Println(key, "is float64", matchValueType)
-			fmt.Println(key, "is float64", message[key])
+			switch message[key].(type) {
+			case float64:
+				if _, ok := message[key]; ok {
+					doMatch, _ := matchFloat64Float64(value.(float64), message[key].(float64))
+					return doMatch, nil
+				}
+				return false, nil
+			default:
+				return false, nil
+			}
 		case []interface{}:
 			fmt.Println(key, "is an array:")
 		case map[string]interface{}:
-			pretty.Println(value, "is a map:")
-			if _, ok := message[key]; ok {
-				doMatch, _ := matchMapMap(value.(map[string]interface{}), message[key].(map[string]interface{}))
-				return doMatch, nil
+			switch message[key].(type) {
+			case map[string]interface{}:
+				if _, ok := message[key]; ok {
+					doMatch, _ := matchMapMap(value.(map[string]interface{}), message[key].(map[string]interface{}))
+					return doMatch, nil
+				}
+			default:
+				return false, nil
 			}
 			return false, nil
 		default:

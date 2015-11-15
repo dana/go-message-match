@@ -6,6 +6,23 @@ import (
 	"testing"
 )
 
+func TestStringMap(t *testing.T) {
+	pretty.Println("TestBogus")
+	assert := assert.New(t)
+	internalMap := map[string]interface{}{
+		"other": "side",
+	}
+	message := map[string]interface{}{
+		"a": internalMap,
+	}
+	match := map[string]interface{}{
+		"a": "b",
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.False(doesMatch)
+}
+
 //ported from https://github.com/dana/perl-Message-Match/blob/master/t/basic.t
 //not nested
 func TestSimplestPossible(t *testing.T) {

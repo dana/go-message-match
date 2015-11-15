@@ -3,7 +3,7 @@ package messagematch
 import (
 	"fmt"
 	"github.com/kr/pretty"
-	"reflect"
+	//	"reflect"
 )
 
 func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
@@ -11,6 +11,32 @@ func Match(message map[string]interface{}, match map[string]interface{}) (bool, 
 	return matchMapMap(message, match)
 }
 
+func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
+	fmt.Println("In matchArrayArray")
+	//	doesMatch := message == match
+	//	return doesMatch, nil
+	for index, value := range match {
+		switch value.(type) {
+		case string:
+			switch message[index].(type) {
+			case string:
+				doMatch, _ := matchStringString(value.(string), message[index].(string))
+				return doMatch, nil
+			default:
+				return false, nil
+			}
+		case int:
+			switch message[index].(type) {
+			case int:
+				doMatch, _ := matchIntInt(value.(int), message[index].(int))
+				return doMatch, nil
+			default:
+				return false, nil
+			}
+		}
+	}
+	return false, nil
+}
 func matchStringString(message string, match string) (bool, error) {
 	fmt.Println("In matchStringString")
 	doesMatch := message == match
@@ -30,7 +56,7 @@ func matchIntInt(message int, match int) (bool, error) {
 
 func matchMapMap(message map[string]interface{}, match map[string]interface{}) (bool, error) {
 	for key, value := range match {
-		fmt.Println(key, " -> ", reflect.TypeOf(value))
+		//fmt.Println(key, " -> ", reflect.TypeOf(value))
 		//		switch matchValueType := value.(type) {
 		switch value.(type) {
 		case string:
@@ -46,8 +72,6 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 				return false, nil
 			}
 		case int:
-			//			fmt.Println(key, "is int", matchValueType)
-			//fmt.Println(key, "is int", message[key])
 			switch message[key].(type) {
 			case int:
 				if _, ok := message[key]; ok {
@@ -70,6 +94,15 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 				return false, nil
 			}
 		case []interface{}:
+			switch message[key].(type) {
+			case []interface{}:
+				if _, ok := message[key]; ok {
+					doMatch, _ := matchArrayArray(value.([]interface{}), message[key].([]interface{}))
+					return doMatch, nil
+				}
+			default:
+				return false, nil
+			}
 			fmt.Println(key, "is an array:")
 		case map[string]interface{}:
 			switch message[key].(type) {

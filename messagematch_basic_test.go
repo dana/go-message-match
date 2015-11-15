@@ -160,6 +160,7 @@ func TestArrayDoesNotContain(t *testing.T) {
 
 //array on both sides: full recursion
 func TestArrayFullMatch(t *testing.T) {
+	pretty.Println("TestArrayFullMatch")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{1, 2, 3},
@@ -172,6 +173,7 @@ func TestArrayFullMatch(t *testing.T) {
 	assert.True(doesMatch)
 }
 func TestNestedArrayFullMatch(t *testing.T) {
+	pretty.Println("TestNestedArrayFullMatch")
 	assert := assert.New(t)
 	firstSub := map[string]interface{}{
 		"a": "b",

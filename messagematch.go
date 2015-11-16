@@ -13,14 +13,13 @@ func Match(message map[string]interface{}, match map[string]interface{}) (bool, 
 
 func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
 	fmt.Println("In matchArrayArray")
-	//	doesMatch := message == match
-	//	return doesMatch, nil
+	// This needs to validate that the length of the array on both sides is the same
 	for index, value := range match {
 		switch value.(type) {
 		case string:
 			switch message[index].(type) {
 			case string:
-				doMatch, _ := matchStringString(value.(string), message[index].(string))
+				doMatch, _ := matchStringString(message[index].(string), value.(string))
 				return doMatch, nil
 			default:
 				return false, nil
@@ -28,7 +27,7 @@ func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
 		case int:
 			switch message[index].(type) {
 			case int:
-				doMatch, _ := matchIntInt(value.(int), message[index].(int))
+				doMatch, _ := matchIntInt(message[index].(int), value.(int))
 				return doMatch, nil
 			default:
 				return false, nil
@@ -37,6 +36,13 @@ func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
 	}
 	return false, nil
 }
+func matchIntString(message int, match string) (bool, error) {
+	panic("matchIntString: unimplemented")
+}
+func matchStringInt(message string, match int) (bool, error) {
+	panic("matchStringInt: unimplemented")
+}
+
 func matchStringString(message string, match string) (bool, error) {
 	fmt.Println("In matchStringString")
 	doesMatch := message == match
@@ -47,6 +53,26 @@ func matchFloat64Float64(message float64, match float64) (bool, error) {
 	fmt.Println("In matchFloat64Float64")
 	doesMatch := message == match
 	return doesMatch, nil
+}
+func matchArrayInt(message []interface{}, match int) (bool, error) {
+	fmt.Println("In matchArrayInt")
+	for _, value := range message {
+		switch value.(type) {
+		case int:
+			doMatch, _ := matchIntInt(value.(int), match)
+			if doMatch {
+				return true, nil
+			}
+		case string:
+			doMatch, _ := matchStringInt(value.(string), match)
+			if doMatch {
+				return true, nil
+			}
+		default:
+			return false, nil
+		}
+	}
+	return false, nil
 }
 func matchIntInt(message int, match int) (bool, error) {
 	fmt.Println("In matchIntInt")
@@ -64,7 +90,7 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			switch message[key].(type) {
 			case string:
 				if _, ok := message[key]; ok {
-					doMatch, _ := matchStringString(value.(string), message[key].(string))
+					doMatch, _ := matchStringString(message[key].(string), value.(string))
 					return doMatch, nil
 				}
 				return false, nil
@@ -73,9 +99,15 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			}
 		case int:
 			switch message[key].(type) {
+			case []interface{}:
+				if _, ok := message[key]; ok {
+					doMatch, _ := matchArrayInt(message[key].([]interface{}), value.(int))
+					return doMatch, nil
+				}
+				return false, nil
 			case int:
 				if _, ok := message[key]; ok {
-					doMatch, _ := matchIntInt(value.(int), message[key].(int))
+					doMatch, _ := matchIntInt(message[key].(int), value.(int))
 					return doMatch, nil
 				}
 				return false, nil
@@ -86,7 +118,7 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			switch message[key].(type) {
 			case float64:
 				if _, ok := message[key]; ok {
-					doMatch, _ := matchFloat64Float64(value.(float64), message[key].(float64))
+					doMatch, _ := matchFloat64Float64(message[key].(float64), value.(float64))
 					return doMatch, nil
 				}
 				return false, nil
@@ -97,7 +129,7 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			switch message[key].(type) {
 			case []interface{}:
 				if _, ok := message[key]; ok {
-					doMatch, _ := matchArrayArray(value.([]interface{}), message[key].([]interface{}))
+					doMatch, _ := matchArrayArray(message[key].([]interface{}), value.([]interface{}))
 					return doMatch, nil
 				}
 			default:
@@ -108,7 +140,7 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			switch message[key].(type) {
 			case map[string]interface{}:
 				if _, ok := message[key]; ok {
-					doMatch, _ := matchMapMap(value.(map[string]interface{}), message[key].(map[string]interface{}))
+					doMatch, _ := matchMapMap(message[key].(map[string]interface{}), value.(map[string]interface{}))
 					return doMatch, nil
 				}
 			default:

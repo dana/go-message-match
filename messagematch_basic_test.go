@@ -134,6 +134,7 @@ func TestMultipleMatchesRequiredNested(t *testing.T) {
 
 //array in message, scalar in match: checks membership
 func TestArrayContains(t *testing.T) {
+	pretty.Println("TestArrayContains")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{1, 2, 3},

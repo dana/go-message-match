@@ -58,7 +58,6 @@ func TestStringMap(t *testing.T) {
 	assert.False(doesMatch)
 }
 func SkipTestArrayContainsMisMatchIntString(t *testing.T) {
-	//	pretty.Println("TestArrayContainsMisMatchIntString")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{"z", 2, 3},
@@ -74,7 +73,6 @@ func SkipTestArrayContainsMisMatchIntString(t *testing.T) {
 //ported from https://github.com/dana/perl-Message-Match/blob/master/t/basic.t
 //not nested
 func TestSimplestPossible(t *testing.T) {
-	//	pretty.Println("TestSimplestPossible")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": "b",
@@ -182,7 +180,6 @@ func TestMultipleMatchesRequiredNested(t *testing.T) {
 
 //array in message, scalar in match: checks membership
 func TestArrayContains(t *testing.T) {
-	//	pretty.Println("TestArrayContains")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{1, 2, 3},
@@ -348,5 +345,4 @@ func TestBasicMatch(t *testing.T) {
 	doesMatch, matchErr := Match(message, match)
 	assert.Nil(matchErr)
 	assert.True(doesMatch)
-	//pretty.Print("noop")
 }

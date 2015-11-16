@@ -1,13 +1,13 @@
 package messagematch
 
 import (
-	"github.com/kr/pretty"
+	//	"github.com/kr/pretty"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestStringMap(t *testing.T) {
-	pretty.Println("TestBogus")
+	//	pretty.Println("TestBogus")
 	assert := assert.New(t)
 	internalMap := map[string]interface{}{
 		"other": "side",
@@ -22,11 +22,24 @@ func TestStringMap(t *testing.T) {
 	assert.Nil(matchErr)
 	assert.False(doesMatch)
 }
+func SkipTestArrayContainsMisMatchIntString(t *testing.T) {
+	//	pretty.Println("TestArrayContainsMisMatchIntString")
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": []interface{}{"z", 2, 3},
+	}
+	match := map[string]interface{}{
+		"a": 2,
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.True(doesMatch)
+}
 
 //ported from https://github.com/dana/perl-Message-Match/blob/master/t/basic.t
 //not nested
 func TestSimplestPossible(t *testing.T) {
-	pretty.Println("TestSimplestPossible")
+	//	pretty.Println("TestSimplestPossible")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": "b",
@@ -134,7 +147,7 @@ func TestMultipleMatchesRequiredNested(t *testing.T) {
 
 //array in message, scalar in match: checks membership
 func TestArrayContains(t *testing.T) {
-	pretty.Println("TestArrayContains")
+	//	pretty.Println("TestArrayContains")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{1, 2, 3},
@@ -161,7 +174,7 @@ func TestArrayDoesNotContain(t *testing.T) {
 
 //array on both sides: full recursion
 func TestArrayFullMatch(t *testing.T) {
-	pretty.Println("TestArrayFullMatch")
+	//	pretty.Println("TestArrayFullMatch")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{1, 2, 3},
@@ -174,7 +187,7 @@ func TestArrayFullMatch(t *testing.T) {
 	assert.True(doesMatch)
 }
 func TestNestedArrayFullMatch(t *testing.T) {
-	pretty.Println("TestNestedArrayFullMatch")
+	//	pretty.Println("TestNestedArrayFullMatch")
 	assert := assert.New(t)
 	firstSub := map[string]interface{}{
 		"a": "b",

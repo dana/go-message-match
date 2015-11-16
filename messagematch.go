@@ -2,17 +2,16 @@ package messagematch
 
 import (
 	"fmt"
-	"github.com/kr/pretty"
+	//	"github.com/kr/pretty"
 	//	"reflect"
 )
 
 func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
-	pretty.Println(message, match)
+	//pretty.Println(message, match)
 	return matchMapMap(message, match)
 }
 
 func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
-	fmt.Println("In matchArrayArray")
 	// This needs to validate that the length of the array on both sides is the same
 	for index, value := range match {
 		switch value.(type) {
@@ -44,18 +43,15 @@ func matchStringInt(message string, match int) (bool, error) {
 }
 
 func matchStringString(message string, match string) (bool, error) {
-	fmt.Println("In matchStringString")
 	doesMatch := message == match
 	return doesMatch, nil
 }
 
 func matchFloat64Float64(message float64, match float64) (bool, error) {
-	fmt.Println("In matchFloat64Float64")
 	doesMatch := message == match
 	return doesMatch, nil
 }
 func matchArrayInt(message []interface{}, match int) (bool, error) {
-	fmt.Println("In matchArrayInt")
 	for _, value := range message {
 		switch value.(type) {
 		case int:
@@ -75,7 +71,6 @@ func matchArrayInt(message []interface{}, match int) (bool, error) {
 	return false, nil
 }
 func matchIntInt(message int, match int) (bool, error) {
-	fmt.Println("In matchIntInt")
 	doesMatch := message == match
 	return doesMatch, nil
 }

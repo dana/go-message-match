@@ -236,6 +236,56 @@ func TestNestedArrayFullMatch(t *testing.T) {
 	assert.True(doesMatch)
 }
 
+//regex
+func SkipTestSimplestRegex(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": "forefoot",
+	}
+	match := map[string]interface{}{
+		"a": " special/foo/",
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.True(doesMatch)
+}
+func SkipTestSimplestRegexFailure(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": "forefoot",
+	}
+	match := map[string]interface{}{
+		"a": " special/smurf/",
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.False(doesMatch)
+}
+func SkipRegexFailureForCaseSensitivity(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": "forefoot",
+	}
+	match := map[string]interface{}{
+		"a": " special/FOO/",
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.False(doesMatch)
+}
+func SkipRegexPassForCaseSensitivity(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": "forefoot",
+	}
+	match := map[string]interface{}{
+		"a": " special/FOO/i",
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.True(doesMatch)
+}
+
 /* Initial set */
 //func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
 func TestBasicMatchStringAndNumber(t *testing.T) {

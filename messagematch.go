@@ -12,28 +12,34 @@ func Match(message map[string]interface{}, match map[string]interface{}) (bool, 
 }
 
 func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
-	// This needs to validate that the length of the array on both sides is the same
+	if len(match) > len(message) {
+		return false, nil
+	}
 	for index, value := range match {
 		switch value.(type) {
 		case string:
 			switch message[index].(type) {
 			case string:
-				doMatch, _ := matchStringString(message[index].(string), value.(string))
-				return doMatch, nil
+				didMatch, _ := matchStringString(message[index].(string), value.(string))
+				if !didMatch {
+					return didMatch, nil
+				}
 			default:
 				return false, nil
 			}
 		case int:
 			switch message[index].(type) {
 			case int:
-				doMatch, _ := matchIntInt(message[index].(int), value.(int))
-				return doMatch, nil
+				didMatch, _ := matchIntInt(message[index].(int), value.(int))
+				if !didMatch {
+					return didMatch, nil
+				}
 			default:
 				return false, nil
 			}
 		}
 	}
-	return false, nil
+	return true, nil
 }
 func matchIntString(message int, match string) (bool, error) {
 	panic("matchIntString: unimplemented")

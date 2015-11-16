@@ -6,6 +6,42 @@ import (
 	"testing"
 )
 
+func TestArrayFullMatchLengthMismatchMatchLonger(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": []interface{}{1, 2, 3},
+	}
+	match := map[string]interface{}{
+		"a": []interface{}{1, 2, 3, 4},
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.False(doesMatch)
+}
+func TestArrayFullMisMatch(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": []interface{}{1, 2, 4},
+	}
+	match := map[string]interface{}{
+		"a": []interface{}{1, 2, 3},
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.False(doesMatch)
+}
+func TestArrayFullMatchLengthMismatchMessageLonger(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": []interface{}{1, 2, 3, 4},
+	}
+	match := map[string]interface{}{
+		"a": []interface{}{1, 2, 3},
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.True(doesMatch)
+}
 func TestStringMap(t *testing.T) {
 	//	pretty.Println("TestBogus")
 	assert := assert.New(t)
@@ -174,7 +210,6 @@ func TestArrayDoesNotContain(t *testing.T) {
 
 //array on both sides: full recursion
 func TestArrayFullMatch(t *testing.T) {
-	//	pretty.Println("TestArrayFullMatch")
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{1, 2, 3},

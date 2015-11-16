@@ -43,7 +43,6 @@ func TestArrayFullMatchLengthMismatchMessageLonger(t *testing.T) {
 	assert.True(doesMatch)
 }
 func TestStringMap(t *testing.T) {
-	//	pretty.Println("TestBogus")
 	assert := assert.New(t)
 	internalMap := map[string]interface{}{
 		"other": "side",
@@ -222,7 +221,6 @@ func TestArrayFullMatch(t *testing.T) {
 	assert.True(doesMatch)
 }
 func TestNestedArrayFullMatch(t *testing.T) {
-	//	pretty.Println("TestNestedArrayFullMatch")
 	assert := assert.New(t)
 	firstSub := map[string]interface{}{
 		"a": "b",
@@ -241,7 +239,7 @@ func TestNestedArrayFullMatch(t *testing.T) {
 	assert.True(doesMatch)
 }
 
-/* legacy
+/* Initial set */
 //func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
 func TestBasicMatchStringAndNumber(t *testing.T) {
 	assert := assert.New(t)
@@ -350,6 +348,5 @@ func TestBasicMatch(t *testing.T) {
 	doesMatch, matchErr := Match(message, match)
 	assert.Nil(matchErr)
 	assert.True(doesMatch)
-	pretty.Print("noop")
+	//pretty.Print("noop")
 }
-*/

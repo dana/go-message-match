@@ -60,13 +60,13 @@ func matchArrayInt(message []interface{}, match int) (bool, error) {
 	for _, value := range message {
 		switch value.(type) {
 		case int:
-			doMatch, _ := matchIntInt(value.(int), match)
-			if doMatch {
+			didMatch, _ := matchIntInt(value.(int), match)
+			if didMatch {
 				return true, nil
 			}
 		case string:
-			doMatch, _ := matchStringInt(value.(string), match)
-			if doMatch {
+			didMatch, _ := matchStringInt(value.(string), match)
+			if didMatch {
 				return true, nil
 			}
 		default:

@@ -1,9 +1,10 @@
 package messagematch
 
 import (
-//	"fmt"
-//	"github.com/kr/pretty"
-//	"reflect"
+	//	"fmt"
+	//"github.com/kr/pretty"
+	//	"reflect"
+	sameish "github.com/dana/go-value-sameish"
 )
 
 func Match(message map[string]interface{}, match map[string]interface{}) (bool, error) {
@@ -19,7 +20,7 @@ func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
 		case string:
 			switch message[index].(type) {
 			case string:
-				didMatch, _ := matchStringString(message[index].(string), value.(string))
+				didMatch := sameish.Sameish(message[index].(string), value.(string))
 				if !didMatch {
 					return didMatch, nil
 				}
@@ -29,7 +30,7 @@ func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
 		case int:
 			switch message[index].(type) {
 			case int:
-				didMatch, _ := matchIntInt(message[index].(int), value.(int))
+				didMatch := sameish.Sameish(message[index].(int), value.(int))
 				if !didMatch {
 					return didMatch, nil
 				}
@@ -40,32 +41,17 @@ func matchArrayArray(message []interface{}, match []interface{}) (bool, error) {
 	}
 	return true, nil
 }
-func matchIntString(message int, match string) (bool, error) {
-	panic("matchIntString: unimplemented")
-}
-func matchStringInt(message string, match int) (bool, error) {
-	panic("matchStringInt: unimplemented")
-}
 
-func matchStringString(message string, match string) (bool, error) {
-	doesMatch := message == match
-	return doesMatch, nil
-}
-
-func matchFloat64Float64(message float64, match float64) (bool, error) {
-	doesMatch := message == match
-	return doesMatch, nil
-}
 func matchArrayInt(message []interface{}, match int) (bool, error) {
 	for _, value := range message {
 		switch value.(type) {
 		case int:
-			didMatch, _ := matchIntInt(value.(int), match)
+			didMatch := sameish.Sameish(value.(int), match)
 			if didMatch {
 				return true, nil
 			}
 		case string:
-			didMatch, _ := matchStringInt(value.(string), match)
+			didMatch := sameish.Sameish(value.(string), match)
 			if didMatch {
 				return true, nil
 			}
@@ -75,11 +61,6 @@ func matchArrayInt(message []interface{}, match int) (bool, error) {
 	}
 	return false, nil
 }
-func matchIntInt(message int, match int) (bool, error) {
-	doesMatch := message == match
-	//	pretty.Println(message, match, doesMatch)
-	return doesMatch, nil
-}
 
 func matchMapMap(message map[string]interface{}, match map[string]interface{}) (bool, error) {
 	for key, value := range match {
@@ -88,7 +69,7 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			switch message[key].(type) {
 			case string:
 				if _, ok := message[key]; ok {
-					didMatch, _ := matchStringString(message[key].(string), value.(string))
+					didMatch := sameish.Sameish(message[key].(string), value.(string))
 					if !didMatch {
 						return didMatch, nil
 					}
@@ -107,7 +88,22 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 				}
 			case int:
 				if _, ok := message[key]; ok {
-					didMatch, _ := matchIntInt(message[key].(int), value.(int))
+					didMatch := sameish.Sameish(message[key].(int), value.(int))
+					if !didMatch {
+						return didMatch, nil
+					}
+				}
+				/*			case float64:  //this one is not working, maybe a problem in the sameish lib
+							if _, ok := message[key]; ok {
+								pretty.Println(message[key].(float64), value.(int))
+								didMatch := sameish.Sameish(message[key].(float64), value.(int))
+								if !didMatch {
+									return didMatch, nil
+								}
+							} */
+			case string:
+				if _, ok := message[key]; ok {
+					didMatch := sameish.Sameish(message[key].(string), value.(int))
 					if !didMatch {
 						return didMatch, nil
 					}
@@ -119,7 +115,7 @@ func matchMapMap(message map[string]interface{}, match map[string]interface{}) (
 			switch message[key].(type) {
 			case float64:
 				if _, ok := message[key]; ok {
-					didMatch, _ := matchFloat64Float64(message[key].(float64), value.(float64))
+					didMatch := sameish.Sameish(message[key].(float64), value.(float64))
 					if !didMatch {
 						return didMatch, nil
 					}

@@ -57,7 +57,7 @@ func TestStringMap(t *testing.T) {
 	assert.Nil(matchErr)
 	assert.False(doesMatch)
 }
-func SkipTestArrayContainsMisMatchIntString(t *testing.T) {
+func TestArrayContainsMisMatchIntString(t *testing.T) {
 	assert := assert.New(t)
 	message := map[string]interface{}{
 		"a": []interface{}{"z", 2, 3},
@@ -372,7 +372,30 @@ func TestBasicNoMatch(t *testing.T) {
 	assert.Nil(matchErr)
 	assert.False(doesMatch)
 }
-
+func SkipTestBasicIntFloat(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": 1.0,
+	}
+	match := map[string]interface{}{
+		"a": 1,
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.True(doesMatch)
+}
+func TestBasicIntStringFloat(t *testing.T) {
+	assert := assert.New(t)
+	message := map[string]interface{}{
+		"a": "1.0",
+	}
+	match := map[string]interface{}{
+		"a": 1,
+	}
+	doesMatch, matchErr := Match(message, match)
+	assert.Nil(matchErr)
+	assert.True(doesMatch)
+}
 func TestBasicMatch(t *testing.T) {
 	assert := assert.New(t)
 	c := map[string]interface{}{
